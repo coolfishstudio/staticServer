@@ -28,8 +28,7 @@ var server = http.createServer(function (request, response) {
         } else {
             // 判断是否是文件夹 是则重定向
             if (fs.statSync(realPath).isDirectory()) {
-                realPath = path.join(pathname, '/', config.Welcome.file);
-                return redirectUrl(realPath)
+                realPath = path.join(assets, pathname, config.Welcome.file);
             }
             // 判断文件是否存在
             fs.exists(realPath, function (exists) {
@@ -62,11 +61,6 @@ function renderNotFound (response) {
 
 function renderError (response) {
     response.writeHead(500, {'Content-Type': 'text/plain'});
-    response.end();
-}
-
-function redirectUrl (response, url) {
-    response.writeHead(302, {'Location': url});
     response.end();
 }
 
