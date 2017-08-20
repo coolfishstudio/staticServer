@@ -27,8 +27,10 @@ var server = http.createServer(function (request, response) {
             response.end();
         } else {
             // 判断是否是文件夹 是则重定向
+            console.log('realPath', realPath)
             if (fs.statSync(realPath).isDirectory()) {
-                realPath = path.join(assets, pathname, config.Welcome.file);
+                realPath = path.join(pathname, config.Welcome.file);
+                return redirectUrl(response, realPath);
             }
             // 判断文件是否存在
             fs.exists(realPath, function (exists) {
@@ -63,7 +65,10 @@ function renderError (response) {
     response.writeHead(500, {'Content-Type': 'text/plain'});
     response.end();
 }
-
+function redirectUrl (response, url) {
+    response.writeHead(302, {'Location': url});
+    response.end();
+}
 function renderAssets (response, realPath, file) {
     // 处理后缀
     var ext = path.extname(realPath);

@@ -4,4 +4,4 @@
 # asset
 这个文件放着一些，纯前端的一些小效果
 
-[ ] who-we-are
+[x] who-we-are
