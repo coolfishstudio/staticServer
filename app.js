@@ -13,7 +13,12 @@ var server = http.createServer(function (request, response) {
     var pathname = url.parse(request.url).pathname;
     pathname = path.normalize(pathname.replace(/\.\./g, ''));
     // 调用path.normalize方法来处理掉不正常的..
-    var realPath = path.join(assets, pathname);
+    var realPath = '';
+    if (pathname === '/favicon.ico') {
+        realPath = 'favicon.ico';
+    } else {
+        realPath = path.join(assets, pathname);
+    }
     try {
         if (pathname === '/') {
             var list = fs.readdirSync(realPath) || []
@@ -27,7 +32,6 @@ var server = http.createServer(function (request, response) {
             response.end();
         } else {
             // 判断是否是文件夹 是则重定向
-            console.log('realPath', realPath)
             if (fs.statSync(realPath).isDirectory()) {
                 realPath = path.join(pathname, config.Welcome.file);
                 return redirectUrl(response, realPath);
